@@ -154,11 +154,19 @@ android:layout_alignParentStart="true"
 - [x] 将“ 零”Button更改show_count TextView为0。
 - [x] 更新Count的点击处理程序Button，使其根据新计数是奇数还是偶数来更改其自身的背景颜色。
 
-**学习到** 设置按钮背景颜色：
+**学习到** 
 
+设置按钮背景颜色，
+除了这样：
 ```
 private Button mbuttonZero;
 mbuttonZero =  (Button) findViewById(R.id.button_zero);
 mbuttonZero.setBackgroundColor(Color.parseColor("#008577"));
 // #008577 是在color.xml找到的PrimaryColor
+```
+
+还可以直接：
+
+```
+view.setBackgroundColor()
 ```
