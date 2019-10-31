@@ -1,7 +1,18 @@
 # Andorid-learning
 [文档位置](https://developer.android.com/courses/fundamentals-training/toc-v2)
+# 目录：
+1-1
+[添加toast](#添加toast)
+[更改textview的值](#更改textview的值)
+
+1-2
+[多种布局](#多种布局)
+[不同方向的layout](#不同方向的layout)
+
+
 
 [第一篇1.1](https://codelabs.developers.google.com/codelabs/android-training-hello-world/index.html?index=..%2F..%2Fandroid-training#7)
+
 
 ## 使用`logcat`：
 * **虚拟设备**：无需操作
@@ -57,7 +68,7 @@ layout_height
 android:onClick="showToast"
 ```
 
-## 添加`toast`
+## 添加toast
 1. `toast`需要你所在的`activity`,因为他需要显示在当前`activity`的前面
 2. 要显示的 `string`
 3. 要显示的时间长度 如： `Toast.LENGTH_SHORT` (2s) / `Toast.LENGTH_LONG` (3.5s)
@@ -71,7 +82,7 @@ public void showToast(View view) {
 }
 ```
 
-## 更改textview的值：
+## 更改textview的值
 1. 新建一个全局 `Textview` 用来存放 `reference`
 2. 在 `onCreate` 函数添加 `findViewById` 函数
 3. `textview.setText()` 传递数
@@ -97,6 +108,8 @@ public class MainActivity extends AppCompatActivity {
 ```
 
 # 1-2 hello Toast B
+### 多种布局
+### 不同方向的layout
 ## 多方向布局
 手机旋转图标 > 创建landspacelayout
 ## 使用 LinearLayout
@@ -170,3 +183,61 @@ mbuttonZero.setBackgroundColor(Color.parseColor("#008577"));
 ```
 view.setBackgroundColor()
 ```
+
+# 1-3 ScrollView
+[ScrollView on codelabs](https://codelabs.developers.google.com/codelabs/android-training-text-and-scrolling-views/index.html?index=..%2F..%2Fandroid-training#5)
+
+scrolling view 是可以下滑看东西的空间。
+
+ScrollView 最好搭配 LinearLayout 使用才不会有一些性能显示问题。
+
+然而 ScrollView 把东西都放在内存里面（这样才能保证流畅），如果 ScrollView 太长会对你的app的性能产生影响。
+如果要显示用户可以 添加/删除/编辑 的项目的长列表，考虑使用 RecyclerView （会在其他课程里讲到）
+
+## 操作
+### **task1**
+1. 进入界面设计的 xml 更改 layout 为 ConstraintLayout
+```
+android.support.constraint.ConstraintLayout
+    ⏬ change to ⏬
+RelativeLayout
+```
+
+2. 删除这行和 ConstraintLayout 有关的
+```
+xmlns:app="http://schemas.android.com/apk/res-auto"
+```
+
+3. 根据[教程](https://codelabs.developers.google.com/codelabs/android-training-text-and-scrolling-views/index.html?index=..%2F..%2Fandroid-training#2)添加3个textview然后设置好属性。并且加上内容文字。（我在jandan上面弄得文字）
+几个我觉得有用如下：
+
+```
+属性：
+layout_width            "match_parent"          //让宽度满屏
+layout_height           "wrap_content"          //让高度正好包住内容
+android:layout_below    "@id/article_heading"   //让他们按顺序上下排列
+android:autoLink        "web"                   //可以让link🔗变成可以点击
+```
+
+操作：
+Extract the ... 
+
+在layout 的 xml里面操作的时候，左边有灯泡。这个操作可以快速把东西放到相关的资源xml里面
+
+### **task2**
+> 添加ScrollView和活动的Web链接
+1. 给textview加上这个 `android:autoLink="web"` 可以让他能够自动识别链接
+2. 用 ScrollView 标签包住要滚动的东西，然后设置好 ScrollView 位置，就可以滚动了。
+
+### **task3**
+> 由于 ScrollView 只能加入一个 view 在里面。
+> 
+> 所以我们要给好几个view都放在一起scroll的时候就得考虑一下这个问题。
+> 
+> 我们可以把那几个 view 放在 LinearLayout 里面，最后相当于只有一个 大的view 被放在 ScrollView 里。
+![参考理解例图](https://codelabs.developers.google.com/codelabs/android-training-text-and-scrolling-views/img/515d9464431393a7.png)
+
+## Coding challenge
+Coding challenge：给你的 scrollview 里面加入一个 button
+## Homework
+很简单都……不写了。
