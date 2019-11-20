@@ -241,3 +241,26 @@ Extract the ...
 Coding challenge：给你的 scrollview 里面加入一个 button
 ## Homework
 很简单都……不写了。
+
+#  1.4
+<https://codelabs.developers.google.com/codelabs/android-training-available-resources/index.html?index=..%2F..%2Fandroid-training#0>
+
+- [ ] 在哪里可以找到开发人员的信息和资源。
+- [ ] 如何将启动器图标添加到您的应用程序。
+- [ ] 开发Android应用程序时如何寻求帮助。
+
+## 添加图标 icon
+
+1. 在 **res** 文件夹 右键 ，new image assets
+2.  Icon Type 选择框, 选择 Launcher Icons (Adaptive & Legacy) 【默认】
+3.  可以自己创建一个（用提供的material icons）或者传图片。
+
+## 隐藏顶部栏 Hide the status bar
+<https://developer.android.com/training/system-ui/status.html>
+
+```
+View decorView = getWindow().getDecorView();
+// Hide the status bar.
+int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
+decorView.setSystemUiVisibility(uiOptions);
+```
