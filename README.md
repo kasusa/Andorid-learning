@@ -320,7 +320,12 @@ decorView.setSystemUiVisibility(uiOptions);
 # 0-1
 # sqlite
 导航：
-* [插入并显示toast结果](#插入并显示toast结果)
+* 以下的东西都需要现有一个DBhelper类
+* [插入并logcat显示结果](#插入并logcat显示结果)
+* [读取并用logcat输出](#读取并用logcat输出)
+* [删除数据](#删除数据)
+* [更新数据库](#更新数据库)
+* [资源控制](#资源控制)
 
 链接：
 * [ANDORID sqlite教程 ](https://developer.android.com/training/data-storage/sqlite#DbHelper)
@@ -374,7 +379,7 @@ oncreate(){
 }
 
 ```
-## 插入并显示toast结果
+## 插入并logcat显示结果
 
 ```java
     public void Insert_hao(View view) {
@@ -387,15 +392,13 @@ oncreate(){
         values.put("birthday","8月1日");
         values.put("Animation","四驱兄弟");
         //插入数据
-        long newRowId = db.insert("AnimeCharacter", null, values);
-        //获取它的返回值-1是失败，其他数字是插入所在的行数
+        long newRowId = db.insert("AnimeCharacter", null, values);//参数2：null是在你没有给的values列上面插入一个sql可以接受的null值
+        //获取它的返回值-1是失败，其他数字是插入所在的行数的PK
         if(newRowId == -1){
-            Toast toast = Toast.makeText(this,"插入失败。", Toast.LENGTH_LONG);
-            toast.show();
+            Log.println(Log.INFO,"meow","插入失败~");
         }else {
             String MSG = "插入成功，插入在第 "+newRowId+" 行";
-            Toast toast = Toast.makeText(this,MSG, Toast.LENGTH_LONG);
-            toast.show();
+            Log.println(Log.INFO,"meow",MSG);
         }
     }
 ```
@@ -440,3 +443,46 @@ public void Read(View view){
 }
 
 ```
+
+## 删除数据
+```java
+// 相当于：DELETE FROM AnimeCharacter WHERE gender like '男'
+public void Delete(View view){
+    SQLiteDatabase db = dbHelper.getWritableDatabase();
+    String selection = "gender" + " LIKE ?";  //“？” 部分会被替换为下面的 selectionArgs
+    String[] selectionArgs = { "男" }; //可以多选
+    int deletedRows = db.delete("AnimeCharacter", selection, selectionArgs);//表名字和上分两个参数
+}
+```
+
+## 更新数据库
+
+```java
+public void Update_maleToUnknow(View view){
+    SQLiteDatabase db = dbHelper.getWritableDatabase();
+    
+    ContentValues values = new ContentValues();
+    values.put("gender", "unknow"); //values.put("列名", "新值");
+
+    String selection = "gender" + " LIKE ?";//“？” 部分会被替换为下面的 selectionArgs
+    String[] selectionArgs = { "男" };//可以多选
+    int count = db.update(
+            "AnimeCharacter",   //表名
+            values,             //插入值类 ContentValues
+            selection,          //选行参数部分1
+            selectionArgs);     //选行参数部分2
+}
+```
+
+## 资源控制
+> 由于在数据库关闭时，调用 getWritableDatabase() 和 getReadableDatabase() 的成本比较高，因此只要您有可能需要访问数据库，就应保持数据库连接处于打开状态。通常情况下，最好在发出调用的 Activity 的 onDestroy() 中关闭数据库。
+
+结论是在destory里面写上些：
+
+```java
+@Override
+protected void onDestroy() {
+    dbHelper.close();
+    super.onDestroy();
+}
+```    
