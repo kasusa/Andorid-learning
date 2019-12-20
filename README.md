@@ -486,3 +486,67 @@ protected void onDestroy() {
     super.onDestroy();
 }
 ```    
+
+# Fragment
+被一个错误卡的快死了
+最后找到了解决办法：
+<https://www.jianshu.com/p/0d0ebb86dd17?utm_campaign=haruki&utm_content=note&utm_medium=reader_share&utm_source=qq>
+
+1. 新建一个fragment 
+2. 选择动态/静态的添加
+3. 静态：编写xml插入你的已有的activity
+4. 动态：
+```java
+FragmentManager fragmentManager = getSupportFragmentManager();
+FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+// Create new fragment and transaction
+Fragment newFragment = new ExampleFragment();
+FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+
+// Replace whatever is in the fragment_container view with this fragment,
+// and add the transaction to the back stack
+transaction.replace(R.id.fragment_container, newFragment);
+transaction.addToBackStack(null);
+
+// Commit the transaction
+transaction.commit();
+```
+提示：对于每个片段事务，您都可通过在提交前调用 setTransition() 来应用过渡动画。
+
+# 设置和SharedPreferences
+## 设置Activity
+我下午时候新建了一个settingsActivity，非常的奇怪。和普通的activity不一样。
+
+编辑settingsActivity的时候要进入 res-->xml-->root_perferences.xml
+需要设置的值有：
+属性名称|介绍
+---|---
+defaultValue | SharedPreferences 的默认值
+key | 存入 SharedPreferences 的 key
+title | 标题
+summary | 详细的介绍
+
+## SharedPreferences
+用于存储一些全局（所有的类都要用）的变量最合适不过的方法！
+也可以取得设置（SettingsActivity）里的内容。
+
+SharedPreferences 使用 key 去取值，存在data文件下的xml里面。
+
+存入数据：
+```java
+// 实例化对象，获取edit() 写入值，确定，toast显示
+SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+SharedPreferences.Editor editor = prefs.edit();
+editor.putString("YourKey", "YourValue");
+editor.commit();
+Toast.makeText(this, "数据成功写入SharedPreferences！",Toast.LENGTH_LONG).show();
+```
+
+取出数据 ： 
+```java
+SharedPreferences sharedPreferences= PreferenceManager.getDefaultSharedPreferences(this);
+boolean temp =sharedPreferences.getString("YourKey", "value_to_show_if_not_exist");
+Toast.makeText(this, "读取数据如下："+"\n"+"YourKey:" + temp + "\n",
+       Toast.LENGTH_LONG).show();
+```

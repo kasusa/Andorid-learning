@@ -1,0 +1,11 @@
+allprojects {
+    repositories {
+        maven { url 'https://maven.aliyun.com/repository/public/' }
+        maven { url 'https://maven.aliyun.com/nexus/content/repositories/google' }
+        maven { url 'https://maven.aliyun.com/nexus/content/repositories/gradle-plugin' }
+        // maven { url '' }
+        mavenLocal()
+        mavenCentral()
+    }
+}
+// aliyun 代理介绍 https://help.aliyun.com/document_detail/102512.html?spm=a2c40.aliyun_maven_repo.0.0.361830549jTnxB
