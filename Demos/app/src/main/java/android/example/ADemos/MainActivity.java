@@ -18,4 +18,8 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, sqLiteActivity.class);
         startActivity(intent);
     }
+    public void btn_jump_LoginActivity(View view) {
+        Intent intent = new Intent(this, LoginActivity.class);
+        startActivity(intent);
+    }
 }
