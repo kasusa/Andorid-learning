@@ -6,6 +6,7 @@
 * [跳转不同activity并传值](#跳转不同activity并传值)
 * [添加向上导航功能](#添加向上导航功能)
 * [logcat](#logcat)
+* [snackbar](#snackbar)
 
 0-1
 * [sqlite](#sqlite)
@@ -69,6 +70,11 @@ textView.setText(message);
 ## logcat
 ```java
 Log.println(Log.INFO,"meow","获取内容了：");
+```
+## snackbar
+```java
+  Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+          .setAction("Action", null).show();
 ```
 
 ## 添加向上导航功能
@@ -488,6 +494,7 @@ protected void onDestroy() {
 ```    
 
 # Fragment
+
 被一个错误卡的快死了
 最后找到了解决办法：
 <https://www.jianshu.com/p/0d0ebb86dd17?utm_campaign=haruki&utm_content=note&utm_medium=reader_share&utm_source=qq>
@@ -496,6 +503,7 @@ protected void onDestroy() {
 2. 选择动态/静态的添加
 3. 静态：编写xml插入你的已有的activity
 4. 动态：
+
 ```java
 FragmentManager fragmentManager = getSupportFragmentManager();
 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -549,4 +557,148 @@ SharedPreferences sharedPreferences= PreferenceManager.getDefaultSharedPreferenc
 boolean temp =sharedPreferences.getString("YourKey", "value_to_show_if_not_exist");
 Toast.makeText(this, "读取数据如下："+"\n"+"YourKey:" + temp + "\n",
        Toast.LENGTH_LONG).show();
+```
+
+# RecyclerView
+[迷惑的文档](https://codelabs.developers.google.com/codelabs/android-training-create-recycler-view/index.html?index=..%2F..android-training#4)
+## 修改父界面
+* 创建一个 recyclerview 项目
+* 主界面为：basic activity
+
+
+mainActivity.java 创建一个存储数据的链表：
+```java
+private final LinkedList<String> mWordList = new LinkedList<>();
+```
+
+在oncreate（）初始化数据
+```java
+// Put initial data into the word list.
+for (int i = 0; i < 20; i++) {
+            mWordList.addLast("Word " + i);
+}
+```
+**注意，下面的代码有问题，我选择直接拖一个andoridx的**
+打开 content_main.xml ,用下面的东西替换 默认的 helloworld textview标签
+```xml
+<android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+</android.support.v7.widget.RecyclerView>
+```
+
+## 创建子界面布局xml
+1. app > res > layout folder --- New > Layout resource file.
+2. 创建 wordlist_item.xml
+3. 最后的图就是一个只有一行textview的东西
+
+创建一个style
+1. 右键你的textview
+2. Refactor > Extract > Style. 
+3. 命名为 word_title  勾选  Launch 'Use Style Where Possible'
+4. 然后如果可以选择 whole project
+5. 应该在你的 values > styles.xml 可以看的到了
+6. 现在你的子界面布局中的 textview 应该正在使用一个 style 了。而不是属性定义的样子（在xml中应该是少了一大段了）。
+
+## 创建一个adapter
+
+adapter类
+```java
+
+import android.content.Context;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.LinkedList;
+
+/**
+ * 定义的item的数据存放结构 mWordList
+ */
+public class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.WordViewHolder>   {
+    private final LinkedList<String> mWordList;//TODO 定义的item的数据存放结构 mWordList 自行搜索相关内容更改名字就好
+    private LayoutInflater mInflater;
+
+    public WordListAdapter(Context context, LinkedList<String> wordList) {
+        mInflater = LayoutInflater.from(context);
+        this.mWordList = wordList;
+    }
+    @NonNull
+    @Override
+    public WordListAdapter.WordViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View mItemView = mInflater.inflate(R.layout.wordlist_item, parent, false);//TODO 上面的R.layout.wordlist_item 更换为自己写的item xml文件
+        return new WordViewHolder(mItemView, this);
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull WordListAdapter.WordViewHolder holder, int position) {
+        String mCurrent = mWordList.get(position);
+        holder.wordItemView.setText(mCurrent);
+    }
+
+    @Override
+    public int getItemCount() {
+        return  mWordList.size();//TODO 返回链表数目
+    }
+
+
+    /**
+     * holder可以把数据和view的id绑定在一起。
+     */
+    class WordViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener
+    {
+        public final TextView wordItemView;//所关联的view
+        final WordListAdapter mAdapter;
+        public WordViewHolder(View itemView, WordListAdapter adapter) {
+            super(itemView);
+            wordItemView = itemView.findViewById(R.id.word);//所关联的view 的 id
+            this.mAdapter = adapter;
+            itemView.setOnClickListener(this);
+        }
+
+        /**
+         * 这个是让你的 item 被点击后的执行的函数。
+         * @param v
+         */
+        @Override
+        public void onClick(View v) {
+            int mPosition = getLayoutPosition();
+            String element = mWordList.get(mPosition);
+            mWordList.set(mPosition, "Clicked! " + element);//执行的代码：
+            mAdapter.notifyDataSetChanged();
+        }
+    }
+
+}
+
+```
+
+在main class添加局部变量
+
+```java
+    private RecyclerView mRecyclerView; 
+    private WordListAdapter mAdapter;
+```
+
+刷新表单：（你可以放在oncreate里面）
+
+```java
+    mRecyclerView = findViewById(R.id.recycleeView);
+    mAdapter = new WordListAdapter(this, mWordList);//告诉adapter我用的局部链表是啥
+    mRecyclerView.setAdapter(mAdapter);
+    mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+```
+
+添加一个新项目（你可以放在onclick里面）
+
+```java
+    int wordListSize = mWordList.size();
+    mWordList.addLast("+ Word " + wordListSize);//添加局部链表项目
+    mRecyclerView.getAdapter().notifyItemInserted(wordListSize);//提示adapter更新视图
+    mRecyclerView.smoothScrollToPosition(wordListSize);//滚动到最后
 ```
