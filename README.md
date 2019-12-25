@@ -7,6 +7,7 @@
 * [添加向上导航功能](#添加向上导航功能)
 * [logcat](#logcat)
 * [snackbar](#snackbar)
+* [button长按](button长按)
 
 0-1
 * [sqlite](#sqlite)
@@ -72,6 +73,8 @@ textView.setText(message);
 Log.println(Log.INFO,"meow","获取内容了：");
 ```
 ## snackbar
+
+<https://www.journaldev.com/10324/android-snackbar-example-tutorial>
 ```java
   Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
           .setAction("Action", null).show();
@@ -701,4 +704,44 @@ public class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.WordVi
     mWordList.addLast("+ Word " + wordListSize);//添加局部链表项目
     mRecyclerView.getAdapter().notifyItemInserted(wordListSize);//提示adapter更新视图
     mRecyclerView.smoothScrollToPosition(wordListSize);//滚动到最后
+```
+
+# button震动
+[教程](https://www.jb51.net/article/110869.htm)
+
+```java
+view.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS,HapticFeedbackConstants.FLAG_IGNORE_VIEW_SETTING);
+
+```
+# button长按
+linstener
+
+```java
+down.setOnLongClickListener(new OnLongClickListener() { 
+        @Override
+        public boolean onLongClick(View v) {
+            // TODO Auto-generated method stub
+            return true;
+        }
+    });
+```
+
+# 弹出输入框：
+```java
+final EditText taskEditText = new EditText(this);
+AlertDialog dialog = new AlertDialog.Builder(this)
+        .setTitle("Add a new task")
+        .setMessage("What do you want to do next?")
+        .setView(taskEditText)
+        .setPositiveButton("Add", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                String task = String.valueOf(taskEditText.getText());
+                // do what ever with your text
+            }
+        })
+        .setNegativeButton("Cancel", null)
+        .create();
+dialog.show();
+return ;
 ```
