@@ -8,6 +8,11 @@
 * [logcat](#logcat)
 * [snackbar](#snackbar)
 * [button长按](button长按)
+* [弹出输入框](#弹出输入框)
+* [RecyclerView](#RecyclerView)
+* [Fragment](#Fragment)
+* [设置和SharedPreferences](#设置和SharedPreferences)
+* [数据绑定](#数据绑定)
 
 0-1
 * [sqlite](#sqlite)
@@ -745,3 +750,20 @@ AlertDialog dialog = new AlertDialog.Builder(this)
 dialog.show();
 return ;
 ```
+
+# 数据绑定
+
+[安卓developer](https://developer.android.com/topic/libraries/data-binding?hl=zh-cn#java)
+
+
+你可以把下面的内容
+```java
+    TextView textView = findViewById(R.id.sample_text);
+    textView.setText(viewModel.getUserName());
+```
+替换为在xml里面做这样的事情：
+```xml
+<TextView
+        android:text="@{viewmodel.userName}" />
+```
+这样做的好处是：借助布局文件中的绑定组件，您可以移除 Activity 中的许多界面框架调用，使其维护起来更简单、方便。还可以提高应用性能，并且有助于防止内存泄漏以及避免发生 Null 指针异常。
