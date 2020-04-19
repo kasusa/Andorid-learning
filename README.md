@@ -3,6 +3,7 @@
 
 # 目录：
 0-0
+* [隐藏顶部栏/状态栏](#隐藏顶部栏/状态栏)
 * [跳转不同activity并传值](#跳转不同activity并传值)
 * [添加向上导航功能](#添加向上导航功能)
 * [logcat](#logcat)
@@ -36,6 +37,19 @@
 * [#隐藏顶部栏](#隐藏顶部栏)
 
 # 0-0
+## 隐藏顶部栏/状态栏
+[参考Stack Overflow](https://stackoverflow.com/questions/2591036/how-to-hide-the-title-bar-for-an-activity-in-xml-with-existing-custom-theme)
+
+在代码 `oncreate`:
+```java
+@Override
+protected void onCreate(Bundle savedInstanceState) {          
+    super.onCreate(savedInstanceState);
+    getSupportActionBar().hide(); //<< this 
+    setContentView(R.layout.activity_main);
+}
+```
+
 ## 跳转不同activity并传值
 
 **不传值** 
