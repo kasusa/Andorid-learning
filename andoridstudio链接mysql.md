@@ -19,24 +19,17 @@ MySQL – Establishing SSL connection without server’s identity verification i
 解决方法是在你的链接字符串后面添加 : `?useSSL=false` 
 (大致如下)
 ```
-spring.datasource.url=jdbc:mysql://localhost/mkyong?useSSL=false
-spring.datasource.username=root
-spring.datasource.password=password
-spring.datasource.driver-class-name=com.mysql.jdbc.Driver
+url=jdbc:mysql://localhost/mkyong?useSSL=false&characterEncoding=utf-8
 ```
 
 ---
-
-一个安卓的问题 :
+## 网络权限
 
 Android应用访问网络时需要先设置权限，在AndroidManifest.xml文件里设置权限：
-
+。设置完后应用才可以联网。
 ```
 <uses-permission android:name="android.permission.INTERNET"/>
 ```
-
-。设置完后应用才可以联网。
-
 并且Android应用不允许在主线程里连接网络，连接网络需要单开线程连接。
 
 [菜鸟 多线程](https://www.runoob.com/java/java-multithreading.html)
@@ -52,7 +45,7 @@ public class MySQLutil{
 
     //    ip :123.56.18.36
     static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
-    static final String DB_URL = "jdbc:mysql://123.56.18.36:3306/andorid-2020-spring?useSSL=false&serverTimezone=Asia/Shanghai";
+    static final String DB_URL = "jdbc:mysql://123.56.18.36:3306/andorid-2020-spring?useSSL=false&serverTimezone=Asia/Shanghai&characterEncoding=utf-8";
     static final String USER = "root";
     static final String PASS = "**********";
     
@@ -115,21 +108,13 @@ public class MySQLutil{
 ## 新线程类的代码
 
 ```java
-public class Thread_IsCitizenAlreadyExist implements Runnable {
+public class Thread_THREADNAME implements Runnable {
     private Thread t;
-    private String id ;
-    public boolean ans = false ;
-
-    public Thread_IsCitizenAlreadyExist(String citizenid) {
-        id = citizenid;
-    }
 
     public void run() {
-        Log.println(Log.INFO,"meow","thread: 开始查找数据库中有没有这个 citizenid");
-        ans = MySQLutil.IsCitizenidAlreadyExist(id);
-        Dataclass.IsCitizenAlreadyExist = ans;
+        Log.println(Log.INFO,"meow","thread: 进行xxx工作");
+        MySQLutil.Somemysql_function(id);
         Dataclass.threadDone();
-        Log.println(Log.INFO,"meow","thread: 完成任务,citizenid 存在 : " + ans);
     }
 
     public void start () {
@@ -167,14 +152,9 @@ public class Dataclass {
 ```java
 // 这里开始处理 如果身份证符合规则,判断是否存在于mysql的citizen表中. (新建线程
 Dataclass.reset();
-Thread_IsCitizenAlreadyExist t = new Thread_IsCitizenAlreadyExist(id);
+Thread_THREADNAME__ t = new Thread_THREADNAME__(id);
 t.start();
-Toast toast = Toast.makeText(this, "查询远程数据库中", Toast.LENGTH_SHORT);
-toast.show();
-// 线程未完成数据拿的时候等待.
 while (!Dataclass.threadDone)
     Thread.sleep(500);
-// (线程结束
 
-boolean citizenidExist = Dataclass.IsCitizenAlreadyExist;
 ```
