@@ -3,7 +3,7 @@
 
 # 目录：
 0-0
-* [隐藏顶部栏/状态栏](#隐藏顶部栏/状态栏)
+* [隐藏顶部栏/状态栏](#隐藏顶部栏状态栏)
 * [跳转不同activity并传值](#跳转不同activity并传值)
 * [添加向上导航功能](#添加向上导航功能)
 * [logcat](#logcat)
@@ -14,7 +14,9 @@
 * [Fragment](#Fragment)
 * [设置和SharedPreferences](#设置和SharedPreferences)
 * [数据绑定](#数据绑定)
-
+* [textview点击效果](#textview点击效果)
+* [保持唤醒](#保持唤醒)
+* [加载远程图片](#加载远程图片)
 0-1
 * [sqlite](#sqlite)
 
@@ -37,7 +39,7 @@
 * [#隐藏顶部栏](#隐藏顶部栏)
 
 # 0-0
-## 隐藏顶部栏/状态栏
+## 隐藏顶部栏状态栏
 [参考Stack Overflow](https://stackoverflow.com/questions/2591036/how-to-hide-the-title-bar-for-an-activity-in-xml-with-existing-custom-theme)
 
 在代码 `oncreate`:
@@ -56,8 +58,7 @@ protected void onCreate(Bundle savedInstanceState) {
 
 ```java
 public void sendMessage(View view) {
-    Intent intent = new Intent(this, ACTIVITY_JUMPING_TO.class);
-    startActivity(intent);
+startActivity(new Intent(this, Activity_jumping_to.class));
 }
 ```
 
@@ -570,6 +571,8 @@ SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
 SharedPreferences.Editor editor = prefs.edit();
 editor.putString("YourKey", "YourValue");
 editor.commit();
+
+
 Toast.makeText(this, "数据成功写入SharedPreferences！",Toast.LENGTH_LONG).show();
 ```
 
@@ -781,3 +784,59 @@ return ;
         android:text="@{viewmodel.userName}" />
 ```
 这样做的好处是：借助布局文件中的绑定组件，您可以移除 Activity 中的许多界面框架调用，使其维护起来更简单、方便。还可以提高应用性能，并且有助于防止内存泄漏以及避免发生 Null 指针异常。
+
+# textview点击效果
+
+添加 `selector_text_press_color.xml` 到 drawable
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:state_selected="true" android:color="#00c7c0"/>
+    <item android:state_focused="true" android:color="#FFEB3B"/>
+    <item android:state_pressed="true" android:color="#FFEB3B"/>
+    <item android:color="#00c7c0"/>
+</selector>
+```
+
+让`textview`使用xml作为颜色
+```xml
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="updateTime"
+        android:text="TextView"
+        
+        android:textColor="@drawable/selector_text_press_color" 
+        android:textSize="60sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+```
+
+# 保持唤醒
+[安卓 文档](https://developer.android.com/training/scheduling/wakelock#java)
+
+```java
+getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+```
+
+# 
+[csdn](https://blog.csdn.net/qq_33200967/article/details/77263062)
+
+在使用前要添加Glide的依赖库
+
+```
+compile 'com.github.bumptech.glide:glide:4.0.0'
+
+```
+
+刚才的条件不变，把点击事件的操作换成下面两行代码
+
+```java
+String url = "https://pic.cnblogs.com/avatar/1142647/20170416093225.png";
+Glide.with(MainActivity.this).load(url).into(myImageView);
+
+```
