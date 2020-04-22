@@ -105,26 +105,6 @@ public class MySQLutil{
 }
 ```
 
-## 新线程类的代码
-
-```java
-public class Thread_THREADNAME implements Runnable {
-    private Thread t;
-
-    public void run() {
-        Log.println(Log.INFO,"meow","thread: 进行xxx工作");
-        MySQLutil.Somemysql_function(id);
-        Dataclass.threadDone();
-    }
-
-    public void start () {
-        if (t == null) {
-            t = new Thread (this);
-            t.start ();
-        }
-    }
-}
-```
 
 ## 中间数据传递类
 
@@ -145,6 +125,53 @@ public class Dataclass {
 
 ```
 
+---
+
+## 新线程类的代码 (不传值进去)
+
+```java
+public class Thread_THREADNAME implements Runnable {
+    private Thread t;
+
+    public void run() {
+        MySQLutil.Somemysql_function();
+        Dataclass.threadDone();
+    }
+
+    public void start () {
+        if (t == null) {
+            t = new Thread (this);
+            t.start ();
+        }
+    }
+}
+```
+## 新线程类的代码 (传值进去)
+```java
+public class Thread_THREADNAME implements Runnable {
+    private Thread t;
+    private 值进去类型 要进去的值 ; // TODO 要进去的值
+
+    public Thread_THREADNAME(值进去类型 值变量名) {
+        要进去的值 = 值变量名;
+    }
+
+    public void run() {
+        MySQLutil.xxxxxx(要进去的值);
+        Dataclass.threadDone();
+    }
+
+    public void start () {
+        if (t == null) {
+            t = new Thread (this);
+            t.start ();
+        }
+    }
+}
+
+```
+
+
 ## 主线程那边的代码
 
 这么多就是为了获得下数据库中存在不存在citizenID `citizenidExist`
@@ -152,7 +179,7 @@ public class Dataclass {
 ```java
 // 这里开始处理 如果身份证符合规则,判断是否存在于mysql的citizen表中. (新建线程
 Dataclass.reset();
-Thread_THREADNAME__ t = new Thread_THREADNAME__(id);
+Thread_THREADNAME__ t = new Thread_THREADNAME__(如果传值_这里是);
 t.start();
 while (!Dataclass.threadDone)
     Thread.sleep(500);

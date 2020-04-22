@@ -772,6 +772,14 @@ return ;
 
 [安卓developer](https://developer.android.com/topic/libraries/data-binding?hl=zh-cn#java)
 
+首先gradle
+```
+android {
+    viewBinding {
+        enabled = true
+    }
+}
+```
 
 你可以把下面的内容
 ```java
@@ -823,7 +831,8 @@ return ;
 getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 ```
 
-# 
+# Imageview 网页图片
+
 [csdn](https://blog.csdn.net/qq_33200967/article/details/77263062)
 
 在使用前要添加Glide的依赖库
@@ -840,3 +849,9 @@ String url = "https://pic.cnblogs.com/avatar/1142647/20170416093225.png";
 Glide.with(MainActivity.this).load(url).into(myImageView);
 
 ```
+
+# 使用 idea Live templates 模板
+
+settings > live templates
+
+![image.png](http://ww1.sinaimg.cn/large/0083vuQJly1ge2emvljgxj31130ktjtb.jpg)
