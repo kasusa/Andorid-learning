@@ -17,6 +17,7 @@
 * [textview点击效果](#textview点击效果)
 * [保持唤醒](#保持唤醒)
 * [加载远程图片](#加载远程图片)
+* [扫码二维码](#扫码二维码)
 0-1
 * [sqlite](#sqlite)
 
@@ -855,3 +856,7 @@ Glide.with(MainActivity.this).load(url).into(myImageView);
 settings > live templates
 
 ![image.png](http://ww1.sinaimg.cn/large/0083vuQJly1ge2emvljgxj31130ktjtb.jpg)
+
+# 扫码二维码
+[使用zxing库 github](https://github.com/yuzhiqiang1993/zxing)
+在作者更新之前,dependency要看一下kasusa发的[issue](https://github.com/yuzhiqiang1993/zxing/issues/175)
