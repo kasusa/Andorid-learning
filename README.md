@@ -18,6 +18,7 @@
 * [保持唤醒](#保持唤醒)
 * [加载远程图片](#加载远程图片)
 * [扫码二维码](#扫码二维码)
+* [ping服务器连通性监测](#ping服务器连通性监测)
 0-1
 * [sqlite](#sqlite)
 
@@ -860,3 +861,37 @@ settings > live templates
 # 扫码二维码
 [使用zxing库 github](https://github.com/yuzhiqiang1993/zxing)
 在作者更新之前,dependency要看一下kasusa发的[issue](https://github.com/yuzhiqiang1993/zxing/issues/175)
+
+# ping服务器连通性监测
+
+```java
+/** connect server test 123.56.18.36
+ * @return true if server is connectable
+ */
+public static boolean connectTest(){
+    System.out.println("executeCommand");
+    Runtime runtime = Runtime.getRuntime();
+    try
+    {
+        Process  mIpAddrProcess = runtime.exec("/system/bin/ping -c 1 123.56.18.36");
+        int mExitValue = mIpAddrProcess.waitFor();
+        System.out.println(" mExitValue "+mExitValue);
+        if(mExitValue==0){
+            return true;
+        }else{
+            return false;
+        }
+    }
+    catch (InterruptedException ignore)
+    {
+        ignore.printStackTrace();
+        System.out.println(" Exception:"+ignore);
+    }
+    catch (IOException e)
+    {
+        e.printStackTrace();
+        System.out.println(" Exception:"+e);
+    }
+    return false;
+}
+```

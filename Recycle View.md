@@ -132,6 +132,8 @@ LinkedList<XXXyour_data_structXXX> mWordList;
   * 赋值
   * 首次填充列表
   * 在这之前要自己先给Linklist数据
+
+
 ```java
 mRecyclerView = findViewById(R.id.recycleeView);
 
@@ -142,12 +144,16 @@ mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
 列表更新函数
 * 改变LinkList内容
+
+
 ```java
 int wordListSize = mWordList.size();
 mWordList.addLast("+ Word " + wordListSize);
+
 ```
 * 提示adapter更新视图
 * 滚动到最后下方
+
 ```java
 mRecyclerView.getAdapter().notifyItemInserted(wordListSize);
 mRecyclerView.smoothScrollToPosition(wordListSize);
