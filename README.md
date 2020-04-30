@@ -19,6 +19,8 @@
 * [加载远程图片](#加载远程图片)
 * [扫码二维码](#扫码二维码)
 * [ping服务器连通性监测](#ping服务器连通性监测)
+* [在oncreate里面移除某个固定元素](#在oncreate里面移除某个固定元素)
+* [progressbar 进度条](#progressbar)
 0-1
 * [sqlite](#sqlite)
 
@@ -894,4 +896,28 @@ public static boolean connectTest(){
     }
     return false;
 }
+```
+# 在oncreate里面移除某个固定元素
+[stackoverflow](https://stackoverflow.com/questions/3995215/add-and-remove-views-in-android-dynamically/7295641)
+
+```java
+View namebar = View.findViewById(R.id.namebar);
+((ViewGroup) namebar.getParent()).removeView(namebar);
+```
+
+# progressbar
+[Stack Overflow](https://stackoverflow.com/questions/12841803/best-way-to-show-a-loading-progress-indicator)
+
+```java
+ProgressDialog progress = new ProgressDialog(this);
+progress.setTitle("Loading");
+progress.setMessage("Wait while loading...");
+progress.setCancelable(false); // disable dismiss by tapping outside of the dialog
+progress.show();
+// To dismiss the dialog
+progress.dismiss();
+```
+
+```java
+ProgressDialog.show(this, "Loading", "Wait while loading...");
 ```

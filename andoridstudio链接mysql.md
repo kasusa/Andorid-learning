@@ -182,6 +182,6 @@ Dataclass.reset();
 Thread_THREADNAME__ t = new Thread_THREADNAME__(如果传值_这里是);
 t.start();
 while (!Dataclass.threadDone)
-    Thread.sleep(500);
+    SystemClock.sleep(500);
 
 ```
