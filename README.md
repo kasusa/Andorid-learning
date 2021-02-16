@@ -41,6 +41,7 @@
 1-4
 * [添加图标icon](#添加图标icon)
 * [#隐藏顶部栏](#隐藏顶部栏)
+* [#seekbar](#seekbar)
 
 # 0-0
 ## 隐藏顶部栏状态栏
@@ -184,7 +185,7 @@ android:onClick="showToast"
 Toast toast = Toast.makeText(this, R.string.toast_message, Toast.LENGTH_SHORT);
 toast.show();
 //或者是
-Toast.makeText(context, R.string.strErrorSql, Toast.LENGTH_SHORT).show();
+Toast.makeText(getApplicationContext(), R.string.strErrorSql, Toast.LENGTH_SHORT).show();
 ```
 
 ## 获取并更改textview的值
@@ -920,4 +921,39 @@ progress.dismiss();
 
 ```java
 ProgressDialog.show(this, "Loading", "Wait while loading...");
+```
+
+# seekbar
+
+写在 oncreate 内部，onProgressChanged 的 progress 参数就是0-100的滑块数值
+```java
+
+final TextView t1=new TextView(this); 
+t1.setText("Hello Android");        
+final SeekBar sk=(SeekBar) findViewById(R.id.seekBar1);     
+sk.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {       
+    @Override       
+    public void onProgressChanged(SeekBar seekBar, int progress,boolean fromUser) {     
+        // TODO Auto-generated method stub      
+
+        t1.setTextSize(progress);
+        Toast.makeText(getApplicationContext(), String.valueOf(progress),Toast.LENGTH_LONG).show();
+    }       
+}); 
+
+```
+
+# imageview 旋转
+
+图片旋转（我在csdn收藏了，这里只写了一种我用了的方法。）
+```java
+ImageView image;
+image = (ImageView)findViewById(R.id.imageView);
+
+    public void rotate(int degree){
+        image.setPivotX(image.getWidth()/2);
+        image.setPivotY(image.getHeight()/2);//支点在图片中心
+        image.setRotation(degree);
+    }
+
 ```
